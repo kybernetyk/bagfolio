@@ -45,8 +45,9 @@ if __name__ == "__main__":
 	bags = get_bags()
 	keys = bags.keys()
 	keys.sort()
-        BTC = 1.261
-        TOTAL = 0
+        START_BTC = 1.261
+        BTC = START_BTC
+        TOTAL_WORTH = 0
 	for k in keys:
             base_worth = 0.0
             worth_now = 0.0
@@ -61,9 +62,11 @@ if __name__ == "__main__":
                     amount -= tx.amount
                     BTC += (tx.amount * tx.price)
 	    worth_now = btc_price(tx.pair, amount)
-            TOTAL += worth_now
+            TOTAL_WORTH += worth_now
             diff = 100.0*((worth_now/base_worth)-1.0)
             print "%s:\t%14.9f\t=>\t(%fB | %fB | %+6.2f%%)" % (k, amount, base_worth, worth_now, diff) 
         print "BTC:\t%14.9f" % BTC
         print "-" * 40
-        print "TOTAL:\t%14.9f BTC" % (TOTAL + BTC)
+        TOTAL_WORTH += BTC
+        diff = 100.0*((TOTAL_WORTH/START_BTC)-1.0)
+        print "TOTAL:\t%14.9f\t=>\t(%fB | %fB | %+6.2f%%)" % (TOTAL_WORTH, START_BTC, TOTAL_WORTH, diff)
