@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import sys
 import sqlite3
+import urllib, json
 
 class Transaction(object):
     pair = ""
@@ -28,24 +29,41 @@ def get_bags():
 	con.close()
 	return bags
 
+def bttrex(sym, amount):
+    elms = sym.split("_")
+    bsym = elms[1] + "-" + elms[0]
+    url = "https://bittrex.com/api/v1.1/public/getticker?market=" + bsym
+    response = urllib.urlopen(url)
+    data = json.loads(response.read())
+    rate = float(data["result"]["Last"])
+    return rate * amount
+
+def btc_price(sym, amount):
+    return bttrex(sym, amount)
+
 if __name__ == "__main__":
 	bags = get_bags()
 	keys = bags.keys()
 	keys.sort()
         BTC = 1.261
-        TOTAL = 0.0
+        TOTAL = 0
 	for k in keys:
-            worth = 0.0
+            base_worth = 0.0
+            worth_now = 0.0
+            amount = 0.0
             for tx in bags[k]:
                 if tx.action == "BUY":
-                    worth += (tx.amount * tx.price)
+                    base_worth += (tx.amount * tx.price)
+                    amount += tx.amount
                     BTC -= (tx.amount * tx.price)
                 if tx.action == "SELL":
-                    worth -= (tx.amount * tx.price)
+                    base_worth -= (tx.amount * tx.price)
+                    amount -= tx.amount
                     BTC += (tx.amount * tx.price)
-	    print k, "\t=>\t", worth
-            TOTAL += worth
-        print "BTC\t=>\t", BTC
-        TOTAL += BTC
+	    worth_now = btc_price(tx.pair, amount)
+            TOTAL += worth_now
+            diff = 100.0*((worth_now/base_worth)-1.0)
+            print "%s:\t%14.9f\t=>\t(%fB | %fB | %+6.2f%%)" % (k, amount, base_worth, worth_now, diff) 
+        print "BTC:\t%14.9f" % BTC
         print "-" * 40
-        print "TOTAL:\t\t%f BTC" % TOTAL
+        print "TOTAL:\t%14.9f BTC" % (TOTAL + BTC)
