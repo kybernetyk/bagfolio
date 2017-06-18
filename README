@@ -1,4 +1,17 @@
 hold your bags, bois
+--------------------
+
+Bagfolio is a bunch of scripts to keep track of your shitcoin portfolio. It's
+not finished yet but as no one is going to use it anyways who cares.
+
+To start checkout this repo and run ./nukedb
+Then call ./buy to add buy transactions to your shitfolio.
+./sell is for sales.
+./bags will print a performance summary.
+
+I wish I could include a screenshot here but I don't trust markdown. That's
+why you have to manually click on screenshot.png to see this thing in all of
+its glory.
 
 license: BSD 3 clause
 (c) cryptoanarchist
