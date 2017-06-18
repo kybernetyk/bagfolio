@@ -2,38 +2,50 @@
 import sys
 import sqlite3
 
+class Transaction(object):
+    pair = ""
+    action = ""
+    amount = 0.0
+    price = 0.0
+
 def get_bags():
 	bags = {}
-	bags["BTC"] = 1.261
-	try:
-		con = sqlite3.connect("db.sqlite")
-		con.row_factory = sqlite3.Row
-		cur = con.execute("SELECT * FROM transactions;")
-		for row in cur:
-			sym = row['pair']
-			sym = sym.split("_")[0]
-			amnt = row['amount']
-			price = row['price']
-			action = row['action']
-			if sym == "BTC":
-				continue
-			if sym not in bags:
-				bags[sym] = 0.0
-			if action == "BUY":
-				bags["BTC"] -= (price * amnt)
-				bags[sym] += amnt
-			if action == "SELL":
-				bags["BTC"] += (price * amnt)
-				bags[sym] -= amnt
-		con.close()
-	except e:
-		print e
-		sys.exit(1)
+	con = sqlite3.connect("db.sqlite")
+	con.row_factory = sqlite3.Row
+	cur = con.execute("SELECT * FROM transactions;")
+	for row in cur:
+            tx = Transaction()
+            tx.pair = row['pair']
+	    tx.amount = row['amount']
+	    tx.price = row['price']
+	    tx.action = row['action']
+            sym = tx.pair.split("_")[0]
+	    if sym == "BTC":
+	        continue
+	    if sym not in bags:
+	        bags[sym] = []
+	    bags[sym].append(tx)
+	con.close()
 	return bags
 
 if __name__ == "__main__":
 	bags = get_bags()
 	keys = bags.keys()
 	keys.sort()
+        BTC = 1.261
+        TOTAL = 0.0
 	for k in keys:
-		print k, "\t=>\t", bags[k]
+            worth = 0.0
+            for tx in bags[k]:
+                if tx.action == "BUY":
+                    worth += (tx.amount * tx.price)
+                    BTC -= (tx.amount * tx.price)
+                if tx.action == "SELL":
+                    worth -= (tx.amount * tx.price)
+                    BTC += (tx.amount * tx.price)
+	    print k, "\t=>\t", worth
+            TOTAL += worth
+        print "BTC\t=>\t", BTC
+        TOTAL += BTC
+        print "-" * 40
+        print "TOTAL:\t\t%f BTC" % TOTAL
