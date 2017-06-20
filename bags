@@ -3,6 +3,12 @@ import sys
 import sqlite3
 import urllib, json
 
+#how many BTC we started with when we created the bagfolio
+#this is going to get its own DB entry some time later
+#until then fill in your richness here
+#(based on this value your final stand alone BTC value is calculated)
+START_BTC = 1.067
+
 class Transaction(object):
     pair = ""
     action = ""
@@ -29,23 +35,22 @@ def get_bags():
 	con.close()
 	return bags
 
-def bttrex(sym, amount):
+def bttrex(sym):
     elms = sym.split("_")
     bsym = elms[1] + "-" + elms[0]
     url = "https://bittrex.com/api/v1.1/public/getticker?market=" + bsym
     response = urllib.urlopen(url)
     data = json.loads(response.read())
     rate = float(data["result"]["Last"])
-    return rate * amount
+    return rate
 
-def btc_price(sym, amount):
-    return bttrex(sym, amount)
+def btc_price(sym):
+    return bttrex(sym)
 
 if __name__ == "__main__":
 	bags = get_bags()
 	keys = bags.keys()
 	keys.sort()
-        START_BTC = 1.261
         BTC = START_BTC
         TOTAL_WORTH = 0
 	for k in keys:
@@ -61,12 +66,13 @@ if __name__ == "__main__":
                     base_worth -= (tx.amount * tx.price)
                     amount -= tx.amount
                     BTC += (tx.amount * tx.price)
-	    worth_now = btc_price(tx.pair, amount)
+            cur_price = btc_price(tx.pair)
+	    worth_now = cur_price * amount
             TOTAL_WORTH += worth_now
             diff = 100.0*((worth_now/base_worth)-1.0)
-            print "%s:\t%14.9f\t=>\t(%fB | %fB | %+6.2f%%)" % (k, amount, base_worth, worth_now, diff) 
-        print "BTC:\t%14.9f" % BTC
+            print "%s:\t%23.8f => [%4.8f] (%fB | %fB | %+6.2f%%)" % (k, amount, cur_price, base_worth, worth_now, diff) 
+        print "BTC:\t%23.8f" % BTC
         print "-" * 40
         TOTAL_WORTH += BTC
         diff = 100.0*((TOTAL_WORTH/START_BTC)-1.0)
-        print "TOTAL:\t%14.9f\t=>\t(%fB | %fB | %+6.2f%%)" % (TOTAL_WORTH, START_BTC, TOTAL_WORTH, diff)
+        print "TOTAL:\t%23.8f\t=>\t(%fB | %fB | %+6.2f%%)" % (TOTAL_WORTH, START_BTC, TOTAL_WORTH, diff)
