@@ -7,7 +7,7 @@ import urllib, json
 #this is going to get its own DB entry some time later
 #until then fill in your richness here
 #(based on this value your final stand alone BTC value is calculated)
-START_BTC = 1.067
+START_BTC = 1.057
 
 class Transaction(object):
     pair = ""

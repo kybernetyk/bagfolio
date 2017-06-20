@@ -34,15 +34,15 @@ def get_price(raw):
 def print_summary(txid, symbol, amount, price):
 	syms = get_symbols(symbol)
 	total = amount * price
-        print("[%i] BUY %.2f %s @ %.8f %s => %.8f %s" % (txid, amount, syms[0], price, syms[1], total, syms[1]))
+        print("[%i] SELL %.2f %s @ %.8f %s => %.8f %s" % (txid, amount, syms[0], price, syms[1], total, syms[1]))
 
-def buy(symbol, amount, price):
+def sell(symbol, amount, price):
     tx = 0
     exchange_id = 2
     try:
         con = sqlite3.connect("db.sqlite")
         cur = con.cursor()
-        cur.execute("INSERT INTO 'transactions' (action, pair, amount, price, exchange_id) VALUES(?, ?, ?, ?, ?)", ("BUY", symbol, amount, price, exchange_id))
+        cur.execute("INSERT INTO 'transactions' (action, pair, amount, price, exchange_id) VALUES(?, ?, ?, ?, ?)", ("SELL", symbol, amount, price, exchange_id))
         con.commit()
         tx = cur.lastrowid
         con.close()
@@ -53,12 +53,12 @@ def buy(symbol, amount, price):
 
 if __name__ == "__main__":
     if len(sys.argv) != 4:
-	print "syntax: buy <amount> <symbol> <price>"
-	print "example: buy 100 BTC_USD 1800"
+	print "syntax: %s <amount> <symbol> <price>" % sys.argv[0]
+	print "example: %s 100 BTC_SC 1800" % sys.argv[0]
 	sys.exit()
 
     symbol = get_symbol(sys.argv[2])
     amount = get_amount(sys.argv[1])
     price = get_price(sys.argv[3])
 
-    buy(symbol, amount, price)
+    sell(symbol, amount, price)
