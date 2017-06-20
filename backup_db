@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+#this saves the current db for a later restore
+cp db.sqlite db.orig
