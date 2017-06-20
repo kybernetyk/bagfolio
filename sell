@@ -1,0 +1,64 @@
+#!/usr/bin/env python
+import sqlite3
+import sys
+
+def get_symbol(raw):
+	raw = raw.upper()
+        if not "_" in raw:
+            raw += "_BTC"
+	return raw
+
+def get_symbols(symstr):
+	symstr = get_symbol(symstr)
+	syms = symstr.split("_")
+	if len(syms) != 2:
+		print "Shitty symbol provided: '%s' - must be of format CUR1_CUR2 ... BTC_USD for example" % symstr
+		sys.exit(1)
+	first = syms[0]
+	second = syms[1]
+        if first == second:
+            print "Shitty symbol provided: '%s' - you can't buy a pair cosnsiting of one currency" % symstr
+            sys.exit(2)
+	return (first, second)
+
+def get_amount(raw):
+	return float(raw)
+
+def get_price(raw):
+	raw = raw.upper()
+	if "S" in raw:
+		raw = raw.split("S")[0]
+		raw = 0.00000001 * float(raw) 
+	return float(raw)
+
+def print_summary(txid, symbol, amount, price):
+	syms = get_symbols(symbol)
+	total = amount * price
+        print("[%i] SELL %.2f %s @ %.8f %s => %.8f %s" % (txid, amount, syms[0], price, syms[1], total, syms[1]))
+
+def sell(symbol, amount, price):
+    tx = 0
+    exchange_id = 2
+    try:
+        con = sqlite3.connect("db.sqlite")
+        cur = con.cursor()
+        cur.execute("INSERT INTO 'transactions' (action, pair, amount, price, exchange_id) VALUES(?, ?, ?, ?, ?)", ("SELL", symbol, amount, price, exchange_id))
+        con.commit()
+        tx = cur.lastrowid
+        con.close()
+    except e:
+        print "Error %s:" % e.args[0]
+        sys.exit(3)
+    print_summary(tx, symbol, amount, price)
+
+if __name__ == "__main__":
+    if len(sys.argv) != 4:
+	print "syntax: %s <amount> <symbol> <price>" % sys.argv[0]
+	print "example: %s 100 BTC_SC 1800" % sys.argv[0]
+	sys.exit()
+
+    symbol = get_symbol(sys.argv[2])
+    amount = get_amount(sys.argv[1])
+    price = get_price(sys.argv[3])
+
+    sell(symbol, amount, price)
