@@ -66,6 +66,8 @@ if __name__ == "__main__":
                     base_worth -= (tx.amount * tx.price)
                     amount -= tx.amount
                     BTC += (tx.amount * tx.price)
+            if amount == 0.0:
+                continue
             cur_price = btc_price(tx.pair)
 	    worth_now = cur_price * amount
             TOTAL_WORTH += worth_now
