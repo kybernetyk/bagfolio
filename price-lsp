@@ -1,0 +1,25 @@
+#!/usr/bin/env newlisp
+(define (usage)
+ (println (format "usage: %s <symbol>" (nth 1 (main-args))))
+ (println (format "example: %s DGB" (nth 1 (main-args))))
+ (exit))
+
+(define (url-for currency-symbol)
+ (set 'currency-symbol (upper-case currency-symbol))
+ (set 'result currency-symbol)
+ (if (not (find "_" currency-symbol)) 
+		   (set 'result (append "BTC-" result)))
+ (append "https://bittrex.com/api/v1.1/public/getticker?market=" result))
+
+(if (!= 3 (length (main-args)))
+ (usage))
+
+(set 'pair (nth 2 (main-args)))
+(set 'url (url-for pair))
+(set 'raw (get-url url))
+(set 'ticker (json-parse raw))
+(set 'last-price (lookup "Last" (lookup "result" ticker)))
+
+(println (format "%9.8f" last-price))
+(exit)
+
