@@ -53,9 +53,11 @@ def avg(sym):
         if tx.action == "BUY":
             total_price += (tx.price * tx.amount)
             total_amount += tx.amount
-#        if tx.action == "SELL":
-#            total_price -= (tx.price * tx.amount)
-#            total_amount -= tx.amount
+#commenting out the SELL part will give us our avg buy price
+#leaving the block in will give us our break even price
+        if tx.action == "SELL":
+            total_price -= (tx.price * tx.amount)
+            total_amount -= tx.amount
     if total_amount == 0.0:
         return 0
     return total_price / total_amount
