@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+MYBTC=$(./bags|grep TOTAL: |awk '{print $2}'); 
+MYUSD=$(echo "$MYBTC * $(./btcusd)"|bc); 
+MYEUR=$(echo "$MYUSD * 0.89" | bc)
+printf "USD: %.2f\n" $MYUSD
+printf "EUR: %.2f\n" $MYEUR
