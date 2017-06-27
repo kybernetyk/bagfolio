@@ -43,4 +43,4 @@ if __name__ == "__main__":
         print "example: price DGB_BTC"
         sys.exit()
     symbol = get_symbol(sys.argv[1])
-    print "%s: %14.8f" % (symbol, btc_price(symbol))
+    print "%.8f" % (btc_price(symbol))

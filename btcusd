@@ -41,4 +41,4 @@ def btc_price(sym):
 
 if __name__ == "__main__":
     symbol = "USDT-BTC"
-    print "%14.8f" % (btc_price(symbol))
+    print "%.8f" % (btc_price(symbol))

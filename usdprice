@@ -1,0 +1,6 @@
+#!/usr/bin/env zsh
+BTC=`./btcusd`
+PRICE=`./price $1`
+FORM="$BTC * $PRICE"
+CALC=`echo $FORM |bc`
+printf "$%.8f\n" $CALC
