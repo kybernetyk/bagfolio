@@ -8,26 +8,7 @@ fn=/tmp/short.log
 
 # Run backup
 cd /Users/kyb/code/bagfolio
-date > $fn
-echo "" >> $fn
-echo "BTC:" >> $fn
-./btcperf >> $fn
-
-echo "" >> $fn
-echo "ETH:" >> $fn
-./ethperf >> $fn
-
-echo "" >> $fn
-echo "ETC:" >> $fn
-./etcperf >> $fn
-
-echo "" >> $fn
-echo "REP:" >> $fn
-./repperf >> $fn
-
-echo "" >> $fn
-echo "XMR:" >> $fn
-./xmrperf >> $fn
+./report > $fn
 
 mail -s "$subject" $email < $fn
 

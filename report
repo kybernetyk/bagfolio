@@ -1,0 +1,23 @@
+#!/bin/sh
+
+date
+echo ""
+echo "BTC:"
+./btcperf
+
+echo ""
+echo "ETH:"
+./ethperf
+
+echo ""
+echo "ETC:"
+./etcperf 
+
+echo ""
+echo "REP:"
+./repperf
+
+echo ""
+echo "XMR:"
+./xmrperf
+
