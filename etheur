@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+curl --silent --form "pair=ETHEUR" "https://api.kraken.com/0/public/Ticker" |jq ".result.XETHZEUR.c[0]" | sed 's/"//g'
