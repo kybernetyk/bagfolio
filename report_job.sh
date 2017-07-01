@@ -1,5 +1,5 @@
 #!/bin/zsh
-. /Users/kyb/.zshrc
+. /home/kyb/.zshrc
 
 # User variables
 email=js@szpilewski.com
@@ -8,7 +8,7 @@ fn=/tmp/short.log
 
 
 # Run backup
-cd /Users/kyb/code/bagfolio
+cd /home/kyb/src/bagfolio
 ./report > $fn
 
 mail -s "$subject" $email < $fn
