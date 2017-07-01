@@ -1,6 +1,6 @@
 #!/bin/sh
 
-date
+#date
 echo ""
 echo "BTC:"
 ./btcperf
@@ -13,11 +13,11 @@ echo ""
 echo "ETC:"
 ./etcperf 
 
-echo ""
-echo "REP:"
-./repperf
+#echo ""
+#echo "REP:"
+#./repperf
 
-echo ""
-echo "XMR:"
-./xmrperf
+#echo ""
+#echo "XMR:"
+#./xmrperf
 

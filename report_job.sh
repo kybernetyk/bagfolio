@@ -1,4 +1,5 @@
-#!/bin/sh
+#!/bin/zsh
+. /Users/kyb/.zshrc
 
 # User variables
 email=js@szpilewski.com
