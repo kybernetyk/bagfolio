@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/usr/bin/env zsh
 . /home/kyb/.zshrc
 
 # User variables

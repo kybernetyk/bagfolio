@@ -9,13 +9,13 @@ echo ""
 echo "ETH:"
 ./ethperf
 
-echo ""
-echo "ETC:"
-./etcperf 
-
 #echo ""
-#echo "REP:"
-#./repperf
+#echo "ETC:"
+#./etcperf 
+
+echo ""
+echo "EOS:"
+./eosperf
 
 #echo ""
 #echo "XMR:"
