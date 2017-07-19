@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-BUY_PRICE="39.73411"
+BUY_PRICE="31.63"
 NOW_PRICE=`./xmreur`
 PERF=`echo "scale=8; (($NOW_PRICE / $BUY_PRICE) - 1.0) * 100.0" |bc`
 printf "BUY: $%.2f\n" $BUY_PRICE

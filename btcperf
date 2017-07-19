@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-BUY_PRICE="1661.0"
+BUY_PRICE="2007.0"
 NOW_PRICE=`./btceur`
 PERF=`echo "scale=8; (($NOW_PRICE / $BUY_PRICE) - 1.0) * 100.0" |bc`
 printf "BUY: $%.2f\n" $BUY_PRICE

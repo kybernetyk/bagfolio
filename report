@@ -13,11 +13,11 @@ echo "ETH:"
 #echo "ETC:"
 #./etcperf 
 
-echo ""
-echo "EOS:"
-./eosperf
-
 #echo ""
-#echo "XMR:"
-#./xmrperf
+#echo "EOS:"
+#./eosperf
+
+echo ""
+echo "XMR:"
+./xmrperf
 
