@@ -5,9 +5,13 @@ echo ""
 echo "BTC:"
 ./btcperf
 
+sleep 2
+
 echo ""
-echo "ETH:"
-./ethperf
+echo "BCH:"
+./bchperf
+
+sleep 2
 
 #echo ""
 #echo "ETC:"
